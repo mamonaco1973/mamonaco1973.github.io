@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tasks>
+<Task>
+
+<Name label="Random Sampling">
+
+<!-- If the Nls element is present than this task has translated labels for the Name. The Nls element does not need to be present -->
+<!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
+
+<Nls>
+<![CDATA[
+{"es":"muestreo aleatorio",
+ "fr":"échantillonnage aléatoire",
+ "zh-cn":"隨機抽樣"}
+]]>
+
+</Nls>
+</Name>
+
+<!-- The keyboards elements defines simple searchable terms for the tasks in the repository. Currently we have a PROCs elements in -->
+<!-- the ctm.json.txt. -->
+                             
+<Keywords>
+<Keyword word="SURVEYSELECT" type="procedure"/>
+<Keyword word="SORT" type="procedure"/>
+</Keywords>
+
+<!-- The Templates element specifies the URI of the relative path of the XML file that defines the task. -->
+
+<Template uri="./RandomSample.xml"/>
+
+<!--The Icon element specifies the icon to use for the task, the icon can be a CSS class or an a URI for an icon within the ITR. -->
+
+<Icon class="sasGenericSummaryReportingTableIcon"/>
+
+<!-- The minimum version of SAS Studio required for this task to function. -->
+
+<Version release="3.4"/>
+
+<!-- The SAS license requirements for this task to function. IF this element is missing then only base SAS is required. -->
+<!--
+#define    PRODBASE           0 // Base SAS 
+#define    PRODSTAT           1 // SAS/STAT
+#define    PRODGRAPH          2 // SAS/GRAPH
+#define    PRODETS            3 // SAS/ETS
+#define    PRODOR             5 // SAS/OR
+#define    PRODIML            7 // SAS/IML
+#define    PRODQC             8 // SAS/QC
+#define    PRODSHARE         10 // SAS/SHARE
+#define    PRODUNIXDB        29 // SAS/ACCESS Interface to UNIX 
+#define    PRODOROPT        164 // OR OPT
+#define    PRODORPRS        165 // OR PRS
+#define    PRODORIVS        166 // OR IVS
+#define    PRODORLSO        167 // OR LSO
+#define    PRODDBIDB2       192 // SAS/ACCESS Interface to DB2
+#define    PRODDB2          192 // SAS/ACCESS Interface to DB2
+#define    PRODDBISQL       193 // SAS/ACCESS Interface to DB2 VM
+#define    PRODORACLE       194 // SAS/ACCESS Interface to Oracle
+#define    PRODRDB          195 // SAS/ACCESS Interface to Oracle Rdb
+#define    PRODDBIOS2       196 // SAS/ACCESS Interface to DB2: OS/2 and Unix
+#define    PRODAS400        207 // SAS/ACCESS Interface to AS/400
+#define    PRODPCFILE       208 // SAS/ACCESS Interface to PC Files
+#define    PRODODBC         209 // SAS/ACCESS Interface to ODBC
+#define    PRODDBIODBC      209 // SAS/ACCESS Interface to ODBC
+#define    PRODINFORMIX     210 // SAS/ACCESS Interface to INFORMIX
+#define    PRODDBIRDBII     211 // SAS/ACCESS Interface to SymfoWARE
+#define    PRODDB2CS        214 // SAS/ACCESS Interface to DB2 CS
+#define    PRODOLEDB        215 // SAS/ACCESS Interface to OLE DB
+#define    PRODR3           216 // SAS/ACCESS Interface to R/3
+#define    PRODBAAN         217 // SAS/ACCESS Interface to Baan
+#define    PRODPEOPLESOFT   218 // SAS/ACCESS Interface to PeopleSoft
+#define    PRODTERADATA     219 // SAS/ACCESS Interface to Teradata
+#define    PRODXML          220 // SAS/ACCESS Interface to XML
+#define    PRODSAPBW        221 // SAS/ACCESS Interface to SAP BW
+#define    PRODMSOFTSQL     222 // SAS/ACCESS Interface to Microsoft SQL Server
+#define    PRODORACLEAPPS   223 // SAS/ACCESS Interface to Oracle Applications
+#define    PRODMYSQL        225 // SAS/ACCESS Interface to MySQL
+#define    PRODNETEZZA      550 // SAS/ACCESS Interface to Netezza
+#define    PRODSCOREACCTERA 552 // SAS Scoring Accelerator for Teradata
+#define    PRODSCOREACCNETZ 553 // SAS Scoring Accelerator for Netezza
+#define    PRODASTER        555 // SAS/ACCESS Interface to Aster nCluster
+#define    PRODGREENPLUM    557 // SAS/ACCESS Interface to Greenplum
+#define    PRODSYBASEIQ     560 // SAS/ACCESS Interface to Sybase IQ
+#define    PRODHADOOP       561 // SAS/ACCESS to Hadoop
+#define    PRODPOSTGRES     564 // SAS/ACCESS to Postgres
+#define    PRODIMPALA       565 // SAS/ACCESS to Impala
+
+-->
+
+<Licenses>
+<Product id="1" maxVersion="*" minVersion="*"/>
+</Licenses>
+</Task>
+
+</Tasks>
