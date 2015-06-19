@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Repository label="Example Independent Task Repository" version="1.0">
+
+<!-- A repository can contain a grouping of tasks and a grouping of snippets. -->
+
+<Tasks>
+<!-- The Nls element is present if there are translated labels for the Repository. The Nls element does not need to be present -->
+<!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
+
+<Nls>
+<![CDATA[
+{"es":"repositorio de trabajo independiente",
+ "fr":"tâche référentiel indépendant",
+ "zh-cn":"獨立的任務儲存庫"}
+]]>
+</Nls>
+
+<!-- Repository can have groupings like the tasks tree. !-->
+
+<Category label="Data Tasks">
+
+<!-- The Nls element is present if there are translated labels for the Category. The Nls element does not need to be present -->
+<!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
+
+<Nls>
+<![CDATA[
+{"es":"tareas de Datos",
+ "fr":"Les tâches de données",
+ "zh-cn":"數據任務"}
+]]>
+</Nls>
+<Location uri="./data/tasks.xml">
+</Location>
+</Category>
+
+<Category label="Graph Tasks">
+
+<!-- The Nls element is present if there are translated labels for the Category. The Nls element does not need to be present -->
+<!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
+
+<Nls>
+<![CDATA[
+{"es":"Tareas Gráfico",
+ "fr":"Tâches Graphique",
+ "zh-cn":"圖任務"}
+]]>
+</Nls>
+
+<Location uri="./graph/tasks.xml">
+</Location>
+</Category>
+
+<Category label="Statistics Tasks">
+
+<!-- The Nls element is present if there are translated labels for the Category. The Nls element does not need to be present -->
+<!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
+
+<Nls>
+<![CDATA[
+{"es":"Estadísticas Tareas",
+ "fr":"Statistiques Tâches",
+ "zh-cn":"統計任務"}
+]]>
+</Nls>
+
+<Location uri="./statistics/tasks.xml">
+</Location>
+</Category>
+
+
+<!-- Contains the legal language for this task repository, acceptance for use, etc ... -->
+<!-- If required is set on this element then the user needs to affirmative accept the Eula with a click. -->
+</Tasks>
+
+<Snippets>
+
+<Category label="DBMS snippets">
+
+<!-- The Nls element is present if there are translated labels for the Category. The Nls element does not need to be present -->
+<!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
+
+<Nls>
+<![CDATA[
+{"es":"fragmentos de DBMS",
+ "fr":"extraits SGBD",
+ "zh-cn":"DBMS片段"}
+]]>
+</Nls>
+
+<Location uri="./access/snippets.xml">
+</Location>
+
+</Category>
+
+</Snippets>
+
+<Eula required="false">
+<![CDATA[
+There are no warranties made for these tasks, to the extent permitted by applicable law.
+]]>
+
+
+<!-- The Nls element is present if there are translated labels for the Eula. The Nls element does not need to be present -->
+<!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
+
+<Nls>
+<![CDATA[
+{"es":"No existen garantías constituidas sobre estas tareas, en la medida permitida por la ley aplicable.",
+ "fr":"Il n'y a pas de garanties faites pour ces tâches, dans la mesure permise par la loi applicable.",
+ "zh-cn":"有没有保证这些任务做，只要适用法律所允许"}
+]]>
+</Nls>
+
+</Eula>
+
+</Repository>
