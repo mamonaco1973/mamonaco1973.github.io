@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Task  schemaVersion="4.0">
+   <Registration>
+      <Name nlsKey="NameKey">List Table Attributes</Name>
+      <Description nlsKey="DescriptionKey">The List Table Attributes task creates a report with the table&apos;s creation date, location, and number of rows as well as the variable names, labels, types, and formats.</Description>
+      <GUID>9D3F4022-79A0-4D47-A7B1-A83579EB6504</GUID>
+      <Procedures>DATASETS</Procedures>
+      <Version>3.4</Version>
+      <Links>
+         <Link href="http://support.sas.com/documentation/onlinedoc/sasstudio/index.html" nlsKey="LinkKey">SAS Studio User's Guide</Link>
+         <Link href=""> </Link>
+         <Link href=""> </Link>
+         <Link href="http://support.sas.com/documentation/cdl/en/proc/67327/HTML/default/viewer.htm#n1hmips60w5w3yn1hj9klna7aplw.htm" nlsKey="LinkKey3">The DATASETS Procedure</Link>
+         <Link href=""> </Link>
+         <Link href=""> </Link>
+         <Link href="http://support.sas.com/training/studio" nlsKey="LinkKey6">SAS Tutorials</Link>
+      </Links>
+	</Registration>
+   
+   
+	<Metadata>
+		
+      <DataSources>
+         <DataSource name="dataset"/>
+      </DataSources>
+
+      <Options>
+         <Option name="datatab" inputType="string" nlsKey="datatabKey">DATA</Option>
+         <Option name="datagrp" inputType="string" nlsKey="datagrpKey">DATA</Option>
+        
+         <Option name="optionstab" inputType="string" nlsKey="optionstabKey">OPTIONS</Option>
+         <Option name="optionsgrp" inputType="string" nlsKey="optionsgrpKey">DISPLAY INFORMATION</Option>
+         <Option name="showDirectory" inputType="checkbox" defaultValue="0" nlsKey="showDirectoryKey">Directory information</Option>
+         <Option name="showAttributes" inputType="checkbox" defaultValue="1" nlsKey="showAttributesKey">Data set attributes</Option>
+         <Option name="showHost" inputType="checkbox" defaultValue="0" nlsKey="showHostKey">Host/Engine information</Option>
+         <Option name="showVariables" inputType="checkbox" defaultValue="1" nlsKey="showVariablesKey">Variables list</Option>
+         <Option name="variableOrder" inputType="combobox" defaultValue="alphabetic" indent="1" nlsKey="variableOrderKey">Variable order:</Option>
+         <Option name="alphabetic" inputType="string" nlsKey="alphabeticKey">Alphabetic</Option>
+         <Option name="numeric" inputType="string" nlsKey="numericKey">Data set position</Option>
+         <Option name="outputDS" inputType="checkbox" default="0" nlsKey="outputDSKey">Create output data set</Option>
+         <Option name="outputDSName" inputType="outputdata" required="true" indent="1" defaultValue="TableAttributes" nlsKey="outputDSNameKey">Data set name:</Option>
+         <Option name="printTable" inputType="checkbox" default="0" indent="1" nlsKey="printTableKey">Print output data set</Option>
+      </Options>
+		
+   </Metadata>
+   
+   
+   <UI>
+
+      <Container option="datatab">
+         <Group option="datagrp" open="true">
+            <DataItem data="dataset"/>
+         </Group>
+      </Container>
+    
+      <Container option="optionstab">
+         <Group option="optionsgrp" open="true">
+            <OptionItem option="showAttributes"/>
+            <OptionItem option="showVariables"/>
+            <OptionChoice option="variableOrder">
+               <OptionItem option="alphabetic"/>
+               <OptionItem option="numeric"/>
+            </OptionChoice>
+            <OptionItem option="showDirectory"/>
+            <OptionItem option="showHost"/>
+         </Group>
+         <OptionItem option="outputDS"/>
+         <OptionItem option="outputDSName"/>
+         <OptionItem option="printTable"/>
+      </Container>
+
+   </UI>
+   
+   
+   <Dependencies>
+      <Dependency condition="$showVariables == '1'">
+         <Target conditionResult="true" option="variableOrder" action="show"/>
+         <Target conditionResult="false" option="variableOrder" action="hide"/>
+      </Dependency>
+      
+      <Dependency condition="($showVariables == '1')">
+         <Target conditionResult="true" option="variableOrder" action="show"/>
+         <Target conditionResult="false" option="variableOrder" action="hide"/>        
+      </Dependency>
+      
+      <Dependency condition="$outputDS == '1'">
+         <Target conditionResult="true" option="outputDSName" action="show"/>
+         <Target conditionResult="false" option="outputDSName" action="hide"/>
+         <Target conditionResult="true" option="printTable" action="show"/>
+         <Target conditionResult="false" option="printTable" action="hide"/>
+      </Dependency>
+   </Dependencies>
+   
+   
+   <Requirements>
+      <Requirement condition="$showAttributes == '1' || $showVariables == '1' || $showHost == '1' || $showDirectory == '1'">
+         <Message nlsKey="tableRequirementKey">Select at least one table to display.</Message>
+      </Requirement>
+   </Requirements>
+	
+  	<CodeTemplate>
+		<![CDATA[
+ods noproctitle;
+#if ($showAttributes == '1' || $showVariables == '1' || $showHost == '1' || $showDirectory == '1')
+   ods select 
+   #if ($showAttributes == '1') attributes #end
+   #if ($showVariables == '1')
+      #if($variableOrder == 'alphabetic') variables
+      #else position
+      #end
+   #end
+   #if ($showHost == '1') enginehost #end
+   #if ($showDirectory == '1') directory #end
+   ;
+#end
+
+#if ($showDirectory == '1')
+   #set($dsn = "$dataset")
+   #set($i1 = $dsn.indexOf('.'))
+   #set($len = $dsn.length())
+   #set($lib = $dsn.substring(0,$i1))
+#end
+proc datasets
+   #if($showDirectory == '1') lib=$lib #end
+   ;
+   contents data=$dataset
+      #if ($showVariables == '1') order = 
+         #if ($variableOrder == 'alphabetic') collate 
+         #else varnum
+         #end
+      #end
+      #if ($outputDS == '1')
+         out=$outputDSName (label="Contents Details for $dataset")
+      #end
+   ;
+quit;
+#if ($printTable == '1')
+proc print ;run;
+#end
+		]]>
+	</CodeTemplate>
+</Task>
