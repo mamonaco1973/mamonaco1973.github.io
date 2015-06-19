@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Task schemaVersion="4.0" runNLS="never">
+<!-- IMPORTANT: runNLS="never" used because nls tool mishandles numbertext message keys -->
+	<Registration>
+		<Name nlsKey="NameKey">Select Random Sample</Name>
+		<Description nlsKey="DescriptionKey">The Select Random Sample task creates an output table that contains a random sample of the rows in the input table.</Description>
+		<GUID>B9210D78-C323-4E41-96B1-91ED39AD5E4C</GUID>
+		<Procedures>SURVEYSELECT SORT</Procedures>
+		<Links>
+         <Link href="http://support.sas.com/documentation/onlinedoc/sasstudio/index.html" nlsKey="LinkKey">SAS Studio User's Guide</Link>
+         <Link href=""> </Link>
+         <Link href=""> </Link>
+         <Link href="http://support.sas.com/documentation/cdl/en/statug/66859/HTML/default/viewer.htm#statug_surveyselect_overview.htm" nlsKey="LinkKey3">The SURVEYSELECT Procedure</Link>
+         <Link href=""> </Link>
+         <Link href=""> </Link>
+         <Link href="http://support.sas.com/documentation/cdl/en/proc/67327/HTML/default/viewer.htm#p1nd17xr6wof4sn19zkmid81p926.htm" nlsKey="LinkKey6">The SORT Procedure</Link>
+         <Link href=""> </Link>
+         <Link href=""> </Link>         
+         <Link href="http://support.sas.com/training/studio" nlsKey="LinkKey9">SAS Tutorials</Link>      
+		</Links>
+		<Version>3.4</Version>
+	</Registration>
+
+	<Metadata>
+		<DataSources>
+			<DataSource name="DATASOURCE">
+				<Roles>
+					<Role maxVars="0" minVars="0" name="OUTVARS" nlsKey="OUTVARSKey" order="true" type="a">Output columns:</Role>
+					<Role maxVars="0" minVars="0" name="STRATAVARS" nlsKey="STRATAVARSKey" order="true" type="a">Strata columns:</Role>
+				</Roles>
+			</DataSource>
+		</DataSources>
+
+ 		<Options>
+			<Option inputType="string" name="DATATAB" nlsKey="DATATABKey">DATA</Option>
+			<Option inputType="string" name="DATAGROUP" nlsKey="DATAGROUPKey">DATA</Option>
+			<Option inputType="string" name="ROLESGROUP" nlsKey="ROLESGROUPKey">ROLES</Option>
+			<Option inputType="string" name="OPTIONSTAB" nlsKey="OPTIONSTABKey">OPTIONS</Option>
+			
+			<Option name="sampRows" inputType="numbertext" required="true"
+				minValue="1" maxValue="1000000000000"
+			 	nlsKey="sampRowsKey" width="100px"
+				promptMessageKey="sampRowsPromptKey"
+				invalidMessageKey="sampRowsInvalidKey"
+				missingMessageKey="sampRowsMissingKey"
+				rangeMessageKey="sampRowsInvalidKey"
+				promptMessage="Enter an integer greater than 0 for the number of rows"
+				missingMessage="Enter an integer greater than 0 for the number of rows"
+				invalidMessage="Enter an integer greater than 0 for the number of rows"
+				rangeMessage="Enter an integer greater than 0 for the number of rows"
+				>Sample size:</Option>
+
+			<Option name="sampRate" inputType="numbertext" required="true"
+				minValue="0.0000000001" maxValue="99.99999999"
+			 	nlsKey="sampRateKey" width="100px"
+				promptMessageKey="sampRatePromptKey"
+				invalidMessageKey="sampRateInvalidKey"
+				missingMessageKey="sampRateMissingKey"
+				rangeMessageKey="sampRateInvalidKey"
+				promptMessage="Enter a value greater than 0 and less than 100 for the percent of rows"
+				missingMessage="Enter a value greater than 0 and less than 100 for the percent of rows"
+				invalidMessage="Enter a value greater than 0 and less than 100 for the percent of rows"
+				rangeMessage="Enter a value greater than 0 and less than 100 for the percent of rows"
+				>Sample percent:</Option>
+				
+				<Option name="SSROWS"    indent="1" inputType="radio" defaultValue="1" nlsKey="SSROWSKey" variable="SS">Rows</Option>
+				<Option name="SSPERCENT" indent="1" inputType="radio" nlsKey="SSPERCENTKey" variable="SS">Percent of rows</Option>
+
+			<Option inputType="string" name="SAMPLEMETHOD" nlsKey="SAMPLEMETHODKey">Sample method:</Option>
+				<Option defaultValue="1" inputType="radio" name="SMSIMPLE" nlsKey="SMSIMPLEKey" variable="SM">Simple (no duplicates)</Option>
+				<Option inputType="radio" name="SMUNREST" nlsKey="SMUNRESTKey" variable="SM">Unrestricted (duplicates allowed)</Option>
+					<Option defaultValue="1" indent="1" inputType="radio" name="SMSHOWEACH" nlsKey="SMSHOWEACHKey" variable="SMS">Show each observations once in output (exclude duplicates)</Option>
+					<Option indent="1" inputType="radio" name="SMSHOWALL" nlsKey="SMSHOWALLKey" variable="SMS">Show all observations in output (include duplicates)</Option>
+
+			<Option name="outputGroup" inputType="string" nlsKey="outputGroupKey">OUTPUT DATA SET</Option>
+			<Option defaultValue="RandomSample" inputType="outputdata" name="OUTDATA" nlsKey="OUTDATAKey" required="true" width="100%">Data set name:</Option>
+
+			<Option inputType="string" name="SEEDNUM" nlsKey="SEEDNUMKey">Random seed number:</Option>
+				<Option defaultValue="1" indent="1" inputType="radio" name="SNNONE" nlsKey="SNNONEKey" variable="SN">None</Option>
+				<Option indent="1" inputType="radio" name="SNSELECT" nlsKey="SNSELECTKey" variable="SN">Random seed number</Option>
+					<Option defaultValue="0" indent="2" inputType="validationtext" invalidMessage="Seed value must be an integer.  If value is negative or zero, the time of day is used as the initial seed value." invalidMessageKey="SNVALUEInvalidKey" missingMessage="Seed value can not be blank" missingMessageKey="SNVALUEMissingKey" name="SNVALUE" nlsKey="SNVALUEKey" regExp="^-|-?\d*$" required="true">Value for initial seed:</Option>
+
+			<Option defaultValue="1" inputType="checkbox" name="SUMMARY" nlsKey="SUMMARYKey">Generate a sample selection summary</Option>
+
+		</Options>
+	</Metadata>
+
+	<UI>
+		<Container option="DATATAB">
+			<Group open="true" option="DATAGROUP">
+				<DataItem data="DATASOURCE"/>
+			</Group>
+			<Group open="true" option="ROLESGROUP">
+				<RoleItem role="OUTVARS"/>
+				<RoleItem role="STRATAVARS"/>
+			</Group>
+								
+			<Group option="outputGroup" open="true">
+				<OptionItem option="OUTDATA"/>
+			</Group>
+		</Container>
+
+		<Container option="OPTIONSTAB">
+			<Group open="true" option="OPTIONSTAB">
+				<OptionItem option="sampRows"/>
+				<OptionItem option="sampRate"/>
+					<OptionItem option="SSROWS"/>
+					<OptionItem option="SSPERCENT"/>
+
+				<OptionItem option="SAMPLEMETHOD"/>
+					<OptionItem option="SMSIMPLE"/>
+					<OptionItem option="SMUNREST"/>
+						<OptionItem option="SMSHOWEACH"/>
+						<OptionItem option="SMSHOWALL"/>
+
+				<OptionItem option="SEEDNUM">
+					<OptionItem option="SNNONE"/>
+					<OptionItem option="SNSELECT"/>
+						<OptionItem option="SNVALUE"/>
+				</OptionItem>
+
+				<OptionItem option="SUMMARY"/>
+			</Group>
+		</Container>
+	</UI>
+	<Dependencies>
+		<Dependency condition="$SM.equalsIgnoreCase('SMUNREST')">
+			<Target action="enable" conditionResult="true" option="SMSHOWEACH"/>
+			<Target action="disable" conditionResult="false" option="SMSHOWEACH"/>
+			<Target action="enable" conditionResult="true" option="SMSHOWALL"/>
+			<Target action="disable" conditionResult="false" option="SMSHOWALL"/>
+		</Dependency>
+		<Dependency condition="$SN.equalsIgnoreCase('SNSELECT')">
+			<Target action="enable" conditionResult="true" option="SNVALUE"/>
+			<Target action="disable" conditionResult="false" option="SNVALUE"/>
+		</Dependency>
+		<Dependency condition="$SS == 'SSROWS'">
+			<Target option="sampRows" conditionResult="true"  action="show"/>
+			<Target option="sampRows" conditionResult="false" action="hide"/>
+			<Target option="sampRate" conditionResult="true"  action="hide"/>
+			<Target option="sampRate" conditionResult="false" action="show"/>
+		</Dependency>
+	</Dependencies>
+
+	<CodeTemplate>
+		<![CDATA[
+#if ($STRATAVARS.size() > 0)
+proc sort 
+	data=$DATASOURCE
+	out=WORK.SORTTempTableSorted;
+	by #foreach($item in $STRATAVARS)$item #end;
+run;
+#end
+
+proc surveyselect data=#if($STRATAVARS.size() > 0)WORK.SORTTempTableSorted #else $DATASOURCE #end
+	
+	out=$OUTDATA
+	method=#if($SM == "SMSIMPLE")srs#end#if($SM == "SMUNREST")urs#end#if($SS == "SSROWS") sampsize=$sampRows#elseif($SS == "SSPERCENT")#set($sRate=$MathTool.div($sampRate,100)) samprate=$sRate#end
+#if($SN == "SNSELECT")
+
+	seed=$SNVALUE#end
+#if(!($SUMMARY == "1"))
+
+	noprint#end
+#if(($SM == "SMUNREST") && ($SMS == "SMSHOWALL"))
+
+	outhits#end
+
+	;
+#if($STRATAVARS.size() > 0)strata #foreach($item in $STRATAVARS)$item #end/ alloc=prop;#end
+#if($OUTVARS.size() > 0)id #foreach($item in $OUTVARS)$item #end;#end
+run;
+
+#if ($STRATAVARS.size() > 0)
+proc delete data=WORK.SORTTempTableSorted; run;
+#end
+]]>
+	</CodeTemplate>	
+
+</Task>
