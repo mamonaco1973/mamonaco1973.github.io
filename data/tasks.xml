@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tasks>
+<Task>
+
+<Name label="List Table Attributes">
+
+<!-- If the Nls element is present than this task has translated labels for the Name. The Nls element does not need to be present -->
+<!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
+
+<Nls>
+<![CDATA[
+{"es":"atributos de tabla",
+ "fr":"les attributs de la table",
+ "zh-cn":"属性表"}
+]]>
+
+</Nls>
+</Name>
+
+
+
+<!-- The keyboards elements defines simple searchable terms for the tasks in the repository. Currently we have a PROCs elements in -->
+<!-- the ctm.json.txt. -->
+                             
+<Keywords>
+<Keyword word="DATASETS" type="procedure"/>
+</Keywords>
+
+<!-- The Templates element specifies the URI of the relative path of the XML file that defines the task. -->
+
+<Template uri="./TableAttributes.xml"/>
+
+<!--The Icon element specifies the icon to use for the task, the icon can be a CSS class or an a URI for an icon within the ITR. -->
+
+<Icon class="sasGenericSummaryReportingTableIcon" uri=""/>
+
+<!-- The minimum version of SAS Studio required for this task to function. -->
+
+<Version release="3.4"/>
+</Task>
+
+</Tasks>
