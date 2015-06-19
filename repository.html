@@ -1,0 +1,344 @@
+<html>
+  <head> 
+  <link rel="shortcut icon" type="image/x-icon" href="http://sww.sas.com/favicon.ico" />
+  <title> Independent Task Repository </title>
+   </head>
+
+<script>
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+    function(m,key,value) {
+      vars[key] = value;
+    });
+    return vars;
+  }
+  
+  function getBaseUrl(url)
+ {
+    var querypos=url.indexOf("?");
+    if (querypos>0) url=url.substring(0,querypos);
+   // console.log(url);
+ 	var parts=url.split("/");
+ 	var last=parts[parts.length-1];
+ 	
+ 	var pos=url.indexOf(last);
+ 	return url.substring(0,pos-1);
+ }
+ 
+ var objects=new Object();
+ var taskCategories=null;
+ var snippetCategories=null;
+ var repositoryDocument=null;
+ var baseURL=getBaseUrl(window.location.href);
+ var parms=getUrlVars();
+ 
+function buildRepository(xmlhttp)
+{
+	try
+	{
+		var s=new XMLSerializer();
+		parser=new DOMParser();
+		addNote("Starting validation of " + xmlhttp.responseURL);
+		repositoryDocument=parseXml(xmlhttp.responseText);
+		var categories=[];
+	
+    	var tasks=repositoryDocument.getElementsByTagName("Tasks");
+    	if (tasks.length==1)
+    	{
+    		taskCategories=tasks[0].getElementsByTagName("Category");
+    	}
+    
+    	var snippets=repositoryDocument.getElementsByTagName("Snippets");
+    	if (snippets.length==1)
+    	{
+    		snippetCategories=snippets[0].getElementsByTagName("Category");
+    	}
+    		
+    	if (taskCategories)
+    	{
+    		var tasks=window.document.getElementById("tasks");
+    		var html="<h4>Task Categories:</h4><ul>";
+    			
+    		for(i=0;i<taskCategories.length;i++)
+    		{
+    			var label=taskCategories[i].getAttribute("label");
+    			var location=taskCategories[i].getElementsByTagName("Location");
+    			uri=location[0].getAttribute("uri");
+    				
+    			var resolvedURL=uri;
+    				
+    			if (resolvedURL.indexOf(".")==0)
+    				resolvedURL= baseURL + uri.substring(1)
+    		
+    			location[0].setAttribute("uri",resolvedURL);
+    		
+    			var link="<a target='_blank' href='" + resolvedURL + "'>" + resolvedURL + "</a>";
+    			html+="<li>" + label + " - " + link + "</li>";
+    		
+    			addNote("Validating '" + label + "' task category.");
+    			var xhr=new XMLHttpRequest();
+    			var taskBase=getBaseUrl(resolvedURL);
+    			//console.log(taskBase);
+    		
+    			xhr.onreadystatechange=function()
+  				{
+  					if (xhr.readyState==4 && xhr.status==200)
+    				{
+    					try
+    					{
+    						doc=parseXml(xhr.responseText);
+    					}
+    					catch(e)
+    					{
+    						addError(resolvedURL + " failed to parse as XML.");
+    						addError(e);
+    						addWarning("Category " + label + " will be ignored.");
+    						return;
+    					}
+    					
+    					tags=doc.getElementsByTagName("Task");
+    					addNote("'" + label + "' task category contains " + tags.length + " tasks.");
+ 						for(j=0;j<tags.length;j++)
+ 						{
+ 							var tag=tags[j];
+ 							nameTag=tag.getElementsByTagName("Name")[0];
+ 							templateTag=tag.getElementsByTagName("Template")[0];
+ 							iconTag=tag.getElementsByTagName("Icon")[0];
+ 							label=nameTag.getAttribute("label");
+ 							templateUri=templateTag.getAttribute("uri");
+ 							iconUri=iconTag.getAttribute("uri");
+ 							//console.log(label);
+ 							if (iconUri)
+ 							{
+ 								if (iconUri.indexOf(".")==0) iconUri=taskBase+iconUri.substring(1);
+ 								//console.log(iconUri);
+ 								iconTag.setAttribute("uri",iconUri);
+ 							}
+ 							if (templateUri.indexOf(".")==0) templateUri=taskBase+templateUri.substring(1);
+ 							//console.log(templateUri);
+ 							templateTag.setAttribute("uri",templateUri);
+ 						
+ 							var note="'" + label + "' is located at <a target='_blank' + href='" + templateUri + "'>" + templateUri + "</a>";
+ 							addNote(note);
+ 						}
+ 						
+ 						processedXML=s.serializeToString(doc);
+ 						objects[resolvedURL]=processedXML;
+ 					}
+ 					else 
+ 					if (xhr.readyState==4 && xhr.status==404)
+ 					{
+ 						addWarning(resolvedURL + " not found.");
+ 						xhr.abort();
+ 						
+ 					}
+    			}
+    		
+    			xhr.open("GET",resolvedURL,false);
+    			try
+    			{
+					xhr.send();	
+				}
+				catch(e)
+				{
+					addWarning(e);
+				}
+				
+    		}
+    			
+    		html+="</ul>";
+    		tasks.innerHTML=html;		
+    	}
+    		
+    	if (snippetCategories)
+    	{
+    		var snippets=window.document.getElementById("snippets");
+    		var html="<h4>Snippet Categories:</h4><ul>";
+    			
+    		for(i=0;i<snippetCategories.length;i++)
+    		{
+    			var label=snippetCategories[i].getAttribute("label");
+    			var location=snippetCategories[i].getElementsByTagName("Location");
+    			uri=location[0].getAttribute("uri");
+    				
+    			var resolvedURL=uri;
+    				
+    			if (resolvedURL.indexOf(".")==0)
+    			resolvedURL= baseURL + uri.substring(1)
+    			location[0].setAttribute("uri",resolvedURL);
+    		
+    			var link="<a target='_blank' href='" + resolvedURL + "'>" + resolvedURL + "</a>";
+    			html+="<li>" + label + " - " + link + "</li>";
+    		
+    			addNote("Validating '" + label + "' snippet category.");
+    		
+    			var xhr=new XMLHttpRequest();
+    			var taskBase=getBaseUrl(resolvedURL);
+    			//console.log(taskBase);
+    		
+    			xhr.onreadystatechange=function()
+  				{
+  					if (xhr.readyState==4 && xhr.status==200)
+    				{
+    					try
+    					{
+    						doc=parseXml(xhr.responseText);
+    					}
+    					catch(e)
+    					{
+    						addError(resolvedURL + " failed to parse as XML.");
+    						addError(e);
+    						addWarning("Category '" + label + "' will be ignored.");
+    						return;
+    					}
+    					
+    					tags=doc.getElementsByTagName("Snippet");
+    					addNote("'" + label + "' snippet category contains " + tags.length + " snippets.");
+ 						for(j=0;j<tags.length;j++)
+ 						{
+ 							var tag=tags[j];
+ 							nameTag=tag.getElementsByTagName("Name")[0];
+ 							templateTag=tag.getElementsByTagName("Template")[0];
+ 							iconTag=tag.getElementsByTagName("Icon")[0];
+ 							label=nameTag.getAttribute("label");
+ 							templateUri=templateTag.getAttribute("uri");
+ 							iconUri=iconTag.getAttribute("uri");
+ 							//console.log(label);
+ 							if (iconUri)
+ 							{
+ 								if (iconUri.indexOf(".")==0) iconUri=taskBase+iconUri.substring(1);
+ 								//console.log(iconUri);
+ 								iconTag.setAttribute("uri",iconUri);
+ 							}
+ 							if (templateUri.indexOf(".")==0) templateUri=taskBase+templateUri.substring(1);
+ 						
+ 							templateTag.setAttribute("uri",templateUri);
+ 							//console.log(templateUri);
+ 						
+ 							var note="'" + label + "' is located at <a target='_blank' + href='" + templateUri + "'>" + templateUri + "</a>";
+ 							addNote(note);
+ 						}
+ 						
+ 						processedXML=s.serializeToString(doc);
+ 						objects[resolvedURL]=processedXML;
+ 					}
+ 					else if (xhr.readyState==4 && xhr.status==404)
+ 					{
+ 						addWarning(resolvedURL + " not found.");
+ 						xhr.abort();
+ 					}
+    			}
+    		
+    			xhr.open("GET",resolvedURL,false);
+				try
+    			{
+					xhr.send();	
+				}
+				catch(e)
+				{
+					addWarning(e);
+				}
+    		}
+    			
+    		html+="</ul>";
+    		snippets.innerHTML=html;
+    	}
+    					
+ 		addNote("Task repository validation completed.");
+ 	
+	 	processedXML=s.serializeToString(repositoryDocument);
+ 		objects["repository.xml"]=processedXML;
+ 		
+ 		console.log(objects);
+    	if (parms["target"])
+ 	   		window.parent.postMessage(objects,parms["target"]);
+ 	   }
+ 	   catch(e)
+ 	   {
+ 	   		addError("Fatal repository condition encountered.");
+ 	   		addError(e.toString());
+ 	   }
+ }
+ 
+ function addNote(note)
+ {
+  	message=window.document.getElementById("message");
+  	var html="<div style='color:blue'>NOTE: " + note + "</div>";
+  	message.innerHTML+=html;
+ }
+ 
+ function addWarning(warning)
+ {
+ 	message=window.document.getElementById("message");
+  	var html="<div style='color:green'>WARNING: " + warning + "</div>";
+  	message.innerHTML+=html;
+ }
+ 
+ function addError(error)
+ {
+ 	message=window.document.getElementById("message");
+  	var html="<div style='color:red'>ERROR: " + error + "</div>";
+  	message.innerHTML+=html;
+ }
+
+function parseXml(xmlString) 
+{
+    var parser = new DOMParser();
+    var dom = parser.parseFromString(xmlString, 'text/xml');
+   	errors=dom.getElementsByTagName("parsererror");
+   	if (errors.length>0)
+   		throw new Error(errors[0].innerHTML);
+    return dom;
+}
+
+ function onLoad()
+ {
+ 	var div=window.document.getElementById("url");
+ 	div.innerHTML="<li>" + baseURL + "</li>";
+
+ 	xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function()
+  	{
+  		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    	{
+    		buildRepository(xmlhttp);
+ 		}
+ 		else if (xmlhttp.readyState==4 && xmlhttp.status==404)
+ 		{
+ 			addError( xmlhttp.responseURL + " (" + xmlhttp.statusText + ")" );
+ 			addError("Task Repository is invalid.");
+ 			xmlhttp.abort();
+ 		}
+ 	}
+ 	uri=parms["uri"];
+ 	if (!uri) uri="./repository.xml";
+ 	xmlhttp.open("GET",uri);
+	xmlhttp.send();	
+ }
+ 
+
+ 
+
+</script>
+   <body onload="onLoad()">
+   <h2>SAS Studio 3.5 Independent Task Repository</h2>
+   <p>
+   Proxy loader and repository validation page.
+   <p>
+   <h4>Access URL:</h4>
+   <p>
+   <ul>
+   <div id="url"></div>
+   </ul>
+   <p>
+   <div id="tasks"></div>
+   <p>
+   <div id="snippets"></div>
+   <p>
+   <pre>
+   <div id="message"></div>
+   </pre>
+   </body>
+  </html>
