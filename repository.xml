@@ -75,20 +75,20 @@
 
 <Snippets>
 
-<Category label="DBMS snippets">
+<Category label="Utilities">
 
 <!-- The Nls element is present if there are translated labels for the Category. The Nls element does not need to be present -->
 <!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
 
 <Nls>
 <![CDATA[
-{"es":"fragmentos de DBMS",
- "fr":"extraits SGBD",
- "zh-cn":"DBMS片段"}
+{"es":"Utilidades",
+ "fr":"Utilitaires",
+ "zh-cn":"公用事业"}
 ]]>
 </Nls>
 
-<Location uri="./access/snippets.xml">
+<Location uri="./utilities/snippets.xml">
 </Location>
 
 </Category>
