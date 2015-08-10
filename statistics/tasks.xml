@@ -2,16 +2,16 @@
 <Tasks>
 <Task>
 
-<Name label="Random Sampling">
+<Name label="Hypergeometric Probabilites">
 
 <!-- If the Nls element is present than this task has translated labels for the Name. The Nls element does not need to be present -->
 <!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
 
 <Nls>
 <![CDATA[
-{"es":"muestreo aleatorio",
- "fr":"échantillonnage aléatoire",
- "zh-cn":"隨機抽樣"}
+{"es":"probabilités hipergeométricas",
+ "fr":"probabilités hypergéométriques",
+ "zh-cn":"超几何probabilites"}
 ]]>
 
 </Nls>
@@ -21,13 +21,12 @@
 <!-- the ctm.json.txt. -->
                              
 <Keywords>
-<Keyword word="SURVEYSELECT" type="procedure"/>
-<Keyword word="SORT" type="procedure"/>
+<Keyword word="DATASTEP" type="procedure"/>
 </Keywords>
 
 <!-- The Templates element specifies the URI of the relative path of the XML file that defines the task. -->
 
-<Template uri="./RandomSample.xml"/>
+<Template uri="./Hypergeometric.xml"/>
 
 <!--The Icon element specifies the icon to use for the task, the icon can be a CSS class or an a URI for an icon within the ITR. -->
 
