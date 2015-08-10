@@ -2,16 +2,16 @@
 <Tasks>
 <Task>
 
-<Name label="List Table Attributes">
+<Name label="The Original Characterize Data">
 
 <!-- If the Nls element is present than this task has translated labels for the Name. The Nls element does not need to be present -->
 <!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
 
 <Nls>
 <![CDATA[
-{"es":"atributos de tabla",
- "fr":"les attributs de la table",
- "zh-cn":"属性表"}
+{"es":"The Original Caracterizar Dat",
+ "fr":"The Original Caractériser Dat",
+ "zh-cn":"原始的定性逸"}
 ]]>
 
 </Nls>
@@ -23,12 +23,17 @@
 <!-- the ctm.json.txt. -->
                              
 <Keywords>
-<Keyword word="DATASETS" type="procedure"/>
+<Keyword word="FREQ" type="procedure"/>
+<Keyword word="SORT" type="procedure"/>
+<Keyword word="PRINT" type="procedure"/>
+<Keyword word="SGPLOT" type="procedure"/>
+<Keyword word="CONTENTS" type="procedure"/>
+<Keyword word="APPEND" type="procedure"/>
 </Keywords>
 
 <!-- The Templates element specifies the URI of the relative path of the XML file that defines the task. -->
 
-<Template uri="./TableAttributes.xml"/>
+<Template uri="./CharacterizeData.xml"/>
 
 <!--The Icon element specifies the icon to use for the task, the icon can be a CSS class or an a URI for an icon within the ITR. -->
 
