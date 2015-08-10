@@ -31,7 +31,7 @@
 
 <!--The Icon element specifies the icon to use for the task, the icon can be a CSS class or an a URI for an icon within the ITR. -->
 
-<Icon class="" uri="./qr.png"/>
+<Icon class="" uri="http://task-hub.com/utilities/qr.png"/>
 
 <!-- The minimum version of SAS Studio required for this task to function. -->
 
