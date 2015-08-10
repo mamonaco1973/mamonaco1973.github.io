@@ -250,10 +250,15 @@ function buildRepository(xmlhttp)
  	
 	 	processedXML=s.serializeToString(repositoryDocument);
  		objects["repository.xml"]=processedXML;
+ 		objects["event"]="loaded";
+ 		objects["status"]=200;
  		
- 		console.log(objects);
+ 		//console.log(objects);
     	if (parms["target"])
+    	{
+    		objects.id=parms["id"];
  	   		window.parent.postMessage(objects,parms["target"]);
+ 	   	}
  	   }
  	   catch(e)
  	   {
@@ -295,15 +300,38 @@ function parseXml(xmlString)
 
  function onLoad()
  {
+    var root=false;
  	var div=window.document.getElementById("url");
  	div.innerHTML="<li>" + baseURL + "</li>";
 
+	if (parms["target"])
+    {
+    	var object=new Object();
+    	object.event="onloadstart";
+    	object.status=200;
+    	object.id=parms["id"];
+ 	   	window.parent.postMessage(object,parms["target"]);
+ 	}
+ 	
+ 	   
  	xmlhttp=new XMLHttpRequest();
 	xmlhttp.onreadystatechange=function()
   	{
   		if (xmlhttp.readyState==4 && xmlhttp.status==200)
     	{
-    		buildRepository(xmlhttp);
+    		if (root) 
+    		{
+    			buildRepository(xmlhttp);
+    		}
+    		else
+    		{
+    			var object=new Object();
+    			object.event="loaded";
+    			object.status=200;
+    			object.id=parms["id"];
+    			object.content=xmlhttp.responseText;
+    			window.parent.postMessage(object,parms["target"]);
+    		}
  		}
  		else if (xmlhttp.readyState==4 && xmlhttp.status==404)
  		{
@@ -312,8 +340,13 @@ function parseXml(xmlString)
  			xmlhttp.abort();
  		}
  	}
+ 	
  	uri=parms["uri"];
- 	if (!uri) uri="./repository.xml";
+ 	if (!uri) 
+ 	{
+ 		root=true;
+ 		uri="./repository.xml";
+ 	}
  	xmlhttp.open("GET",uri);
 	xmlhttp.send();	
  }
@@ -324,6 +357,8 @@ function parseXml(xmlString)
 </script>
    <body onload="onLoad()">
    <h2>SAS Studio 3.5 Independent Task Repository</h2>
+   <p>
+   <i>Task-Hub.Com Test Repository (Secured)</i>
    <p>
    Proxy loader and repository validation page.
    <p>
