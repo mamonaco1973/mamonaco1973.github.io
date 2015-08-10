@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><Task runNLS="never" schemaVersion="4.0">
+   <Registration>
+      <Name>Hypergeometric probabilites</Name>
+      <Description>Demonstrate hypergeometric probabilities.</Description>
+      <GUID>a2004462-94d9-4ff8-8a0b-826520f5d50e</GUID>
+      <Procedures>DATA STEP</Procedures>
+      <Version>3.5</Version>
+      <Links>
+      <Link href="http://support.sas.com/software/products/sasstudio/index.html#s1=2">SAS Studio Documentation</Link>
+      </Links>
+   </Registration>
+   <Metadata>
+
+      <Options>
+         <Option name="specTab" inputType="string">OPTIONS</Option>
+         <Option name="descrip" inputType="string">
+         There are r red balls and b black balls in a bin.  If c balls are chosen at random, find the probablility of selecting 1, 2, ... c red balls.</Option>
+         <Option name="redballs" inputType="numstepper" minValue="1" maxValue="100" decimalPlaces="0" required="true" defaultValue="5" indent="1">Number of red balls (r):</Option>
+         <Option name="blackballs" inputType="numstepper" minValue="1" maxValue="100" decimalPlaces="0" required="true" defaultValue="5" indent="1">Number of black balls (b):</Option>
+         <Option name="chosen" inputType="numstepper" minValue="1" maxValue="100" decimalPlaces="0" required="true" defaultValue="5" indent="1">Number of balls selected (c):</Option>   
+         <Option name="outdata" inputType="outputdata" defaultValue="probabilities" required="true">Output data set:</Option>
+      </Options>
+      
+   </Metadata>
+     
+   <UI>
+      <Container option="specTab">
+         <OptionItem option="descrip"/>
+         <OptionItem option="redballs"/>
+         <OptionItem option="blackballs"/>
+         <OptionItem option="chosen"/>
+         <OptionItem option="outdata"/>
+      </Container>
+     
+   </UI>
+   
+   <Requirements>
+      <Requirement condition="!($chosen &gt; $MathTool.add($redballs, $blackballs))">
+         <Message>The number chosen must be less than the total of red and black balls.</Message>
+      </Requirement>
+   </Requirements>
+   
+   <CodeTemplate>
+<![CDATA[
+
+%let total=%eval($redballs+$blackballs);
+
+data $outdata;
+   label i = "Number of red balls" prob = "Probability" cumprob =  "Cumulative probability";
+   format prob cumprob 6.4;
+   retain cumprob 0;
+   do i = max(0,%eval($chosen - $blackballs)) to min($redballs,$chosen);
+      prob = (comb($chosen,i) * comb(%eval(&total - $chosen),$redballs - i)) / comb(&total,$redballs);
+      cumprob = cumprob + prob;
+      output;
+   end;
+run;
+proc print label;
+run;
+]]>
+   </CodeTemplate>
+</Task>
