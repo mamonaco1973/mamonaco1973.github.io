@@ -1,47 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Tasks>
-<Task>
 
-<Name label="The Original Characterize Data">
-
-<!-- If the Nls element is present than this task has translated labels for the Name. The Nls element does not need to be present -->
-<!-- The translated strings are javascript objects serialized to JSON with the locale designation as a key. -->
-
-<Nls>
-<![CDATA[
-{"es":"The Original Caracterizar Dat",
- "fr":"The Original Caractériser Dat",
- "zh-cn":"原始的定性逸"}
-]]>
-
-</Nls>
-</Name>
-
-
-
-<!-- The keyboards elements defines simple searchable terms for the tasks in the repository. Currently we have a PROCs elements in -->
-<!-- the ctm.json.txt. -->
-                             
-<Keywords>
-<Keyword word="FREQ" type="procedure"/>
-<Keyword word="SORT" type="procedure"/>
-<Keyword word="PRINT" type="procedure"/>
-<Keyword word="SGPLOT" type="procedure"/>
-<Keyword word="CONTENTS" type="procedure"/>
-<Keyword word="APPEND" type="procedure"/>
-</Keywords>
-
-<!-- The Templates element specifies the URI of the relative path of the XML file that defines the task. -->
-
-<Template uri="./CharacterizeData.xml"/>
-
-<!--The Icon element specifies the icon to use for the task, the icon can be a CSS class or an a URI for an icon within the ITR. -->
-
-<Icon class="sasGenericSummaryReportingTableIcon" uri=""/>
-
-<!-- The minimum version of SAS Studio required for this task to function. -->
-
-<Version release="3.4"/>
-</Task>
+	<Task>
+		<Name label="List Data"/>
+		<Template uri="./ListData.ctm"/>
+	</Task>
 
 </Tasks>
